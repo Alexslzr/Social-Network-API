@@ -1,7 +1,8 @@
 # Social-Network-API
 
+<img src="https://img.shields.io/badge/License-MIT-blue"></img>
 
-## Your Task
+## Description
 
 MongoDB is a popular choice for many social networks due to its speed with large amounts of data and flexibility with unstructured data. Over the last part of this course, you’ll use several of the technologies that social networking platforms use in their full-stack applications. Because the foundation of these applications is data, it’s important that you understand how to build and structure the API first.
 
@@ -279,3 +280,14 @@ You are required to submit BOTH of the following for review:
 
 ---
 © 2023 edX Boot Camps LLC. Confidential and Proprietary. All Rights Reserved.
+
+## License
+
+This project utilizes an MIT License. [Read more](https://choosealicense.com/licenses/mit/)
+
+## Links
+
+Github: <br>
+https://github.com/Alexslzr
+
+App Video: <br>

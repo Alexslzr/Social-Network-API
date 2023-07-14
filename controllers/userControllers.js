@@ -12,8 +12,12 @@ module.exports = {
 
     async getUserbyId(req, res){
         try{
-            const singleUser = await User.findOne({_id: req.params.id})
-                .select('-__v');
+            const singleUser = await User.findOne({_id: req.params.userId})
+                .select('-__v')
+                .populate(
+                        { path: 'thoughts', select: '-__v' },
+                        { path: 'friends', select: '-__v'}
+                    );;
             if(!singleUser){
                 return res.status(404).json({message: "no user found under this id"})
             }
@@ -35,7 +39,7 @@ module.exports = {
     async updateUser(req,res){
         try{
             const updatedUser = await User.findOneandUpdate(
-                {_id: req.params.id},
+                {_id: req.params.userId},
                 {$set: req.body},
                 {runValidators: true, new: true}
             )
@@ -52,7 +56,7 @@ module.exports = {
     async deleteUser(req,user){
         try{
             const deletedUser = await User.findOneandDelete({
-                _id: req.params.id
+                _id: req.params.userId
             })
 
             if(!deletedUser){
@@ -64,7 +68,21 @@ module.exports = {
         } catch (err){
             res.status(500).json(err)
         }
+    },
+
+    async addFriends(req,res){
+        try{
+
+        } catch(err){
+            res.status(500).json(err)
+        }
+    },
+
+    async deleteFriends(req,res){
+        try{
+
+        } catch(err){
+            res.status(500).json(err)
+        }
     }
-
-
 }

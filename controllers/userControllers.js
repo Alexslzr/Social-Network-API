@@ -3,7 +3,7 @@ const {Thought, User} = require('../models')
 module.exports = {
     async getAllUsers(req,res){ 
         try{
-        const users =  await User.find()
+        const users =  await User.find({})
         res.json(users)
         } catch (err){
             res.status(500).json(err);
@@ -72,7 +72,16 @@ module.exports = {
 
     async addFriends(req,res){
         try{
+            const newFriend = await User.findOneAndUpdate(
+                {_id: req.params.userId},
+                {$push: {friends: req.body}},
+                {new: true})
+            
+            if(!newFriend){
+                return res.status(404).json({message: "No user found under this id"})
+            }
 
+            res.json(newFriend)
         } catch(err){
             res.status(500).json(err)
         }
@@ -80,9 +89,18 @@ module.exports = {
 
     async deleteFriends(req,res){
         try{
+            const deleteFriend = await User.findOneAndUpdate(
+                {_id: req.params.userId},
+                {$pull: {friends: req.body}},
+                {new: true})
+            
+            if(!deleteFriend){
+                return res.status(404).json({message: "No user found under this id"})
+            }
 
+            res.json(newFriend)
         } catch(err){
             res.status(500).json(err)
         }
-    }
+}
 }

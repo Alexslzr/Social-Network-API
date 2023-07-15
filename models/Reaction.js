@@ -16,7 +16,8 @@ const reactionSchema = new Schema({
     },
     createdAt: {
         type: Date,
-        default: Date.now()
+        default: Date.now(),
+        get: formatTime
     }
     },
     {
@@ -27,5 +28,10 @@ const reactionSchema = new Schema({
         id: false
     }
 )
+
+function formatTime(time){
+    let formattedTime = new Date(time)
+    return formattedTime.toLocaleString()
+}
 
 module.exports = reactionSchema

@@ -11,6 +11,7 @@ const thoughtSchema = new Schema({
     createdAt: {
         type: Date,
         default: Date.now(),
+        get: formatTime
     },
     username: {
         type: String,
@@ -30,6 +31,10 @@ thoughtSchema.virtuals('reactionCount').get(function(){
     return this.reactions.length
 })
 
+function formatTime(time){
+    let formattedTime = new Date(time)
+    return formattedTime.toLocaleString()
+}
 const Thought = model('thought', thoughtSchema)
 
 module.exports = Thought

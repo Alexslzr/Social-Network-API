@@ -26,7 +26,7 @@ module.exports = {
             res.status(500).json(err)
         }
     },
- //confused
+
     async  postThoughts(req,res){
         try{
             const postedThought = await Thought.create(req.body);
@@ -48,29 +48,43 @@ module.exports = {
 
     async  updateThoughts(req,res){
         try{
+            const updatedThought = await Thought.findOneAndUpdate(
+                {_id: req.params.thoughtId},
+                {$set: req.body},
+                {runValidators: true, new: true})
+            if(!updatedThought){
+                return res.status(404).json({message: "No thought found with this id"})
+            }
 
+            res.json(updatedThought)
         } catch(err){
-            
+            res.status(500).json(err)
         }
     },
 
     async  deleteThoughts(req,res){
         try{
-
-        } catch(err){
+            const deletedThough = await Thought.findOneAndDelete({_id: req.params.thoughtId})
             
+            if(!deletedThough){
+                return res.status(404).json({message: "no thought found under this id"})
+            }
+
+            res.json(deletedThough)
+        } catch(err){
+            res.status(500).json(err)
         }
     },
 
-    async  getThoughts(req,res){
+    async  PostReaction(req,res){
         try{
-
+            
         } catch(err){
             
         }
     },
 
-    async  getThoughts(req,res){
+    async  deleteReaction(req,res){
         try{
 
         } catch(err){

@@ -3,7 +3,7 @@ const {Thought, User} = require('../models')
 module.exports = {
     async getAllUsers(req,res){ 
         try{
-        const users =  await User.find({})
+        const users =  await User.find({}).select('-__v')
         res.json(users)
         } catch (err){
             res.status(500).json(err);
@@ -14,10 +14,8 @@ module.exports = {
         try{
             const singleUser = await User.findOne({_id: req.params.userId})
                 .select('-__v')
-                .populate(
-                        { path: 'thoughts', select: '-__v' },
-                        { path: 'friends', select: '-__v'}
-                    );;
+                .populate({ path: 'thoughts', select: '-__v'})
+                .populate({ path: 'friends', select: '-__v'})
             if(!singleUser){
                 return res.status(404).json({message: "no user found under this id"})
             }
@@ -38,7 +36,7 @@ module.exports = {
 
     async updateUser(req,res){
         try{
-            const updatedUser = await User.findOneandUpdate(
+            const updatedUser = await User.findOneAndUpdate(
                 {_id: req.params.userId},
                 {$set: req.body},
                 {runValidators: true, new: true}
@@ -53,9 +51,9 @@ module.exports = {
         }
     },
 
-    async deleteUser(req,user){
+    async deleteUser(req,res){
         try{
-            const deletedUser = await User.findOneandDelete({
+            const deletedUser = await User.findOneAndDelete({
                 _id: req.params.userId
             })
 

@@ -30,9 +30,9 @@ module.exports = {
     async  postThoughts(req,res){
         try{
             const postedThought = await Thought.create(req.body);
-            const updateUser = await User.findandUpdate(
+            const updateUser = await User.findOneAndUpdate(
                 {_id: req.body.userId},
-                {$addtoSet: {thoughts: postedThought._id}},
+                {$push: {thoughts: postedThought._id}},
                 {new: true}
             )
 
@@ -40,7 +40,7 @@ module.exports = {
                 return res.status(404).json({message: "though updated but no user found under this id"})
             }
 
-            res.json('Created though')
+            res.json(updateUser)
         } catch(err){
             res.status(500).json(err)
         }
@@ -80,7 +80,7 @@ module.exports = {
         try{
             const addReaction = await Thought.findOneAndUpdate(
                 {_id: req.params.thoughtId},
-                {$push : {reactions: req.body}},
+                {$addToSet : {reactions: req.body}},
                 {runValidators: true, new: true})
 
             if(!addReaction){
@@ -95,7 +95,7 @@ module.exports = {
 
     async  deleteReaction(req,res){
         try{
-            const deleteReaction = await Thought.findByIdAndUpdate(
+            const deleteReaction = await Thought.findOneAndUpdate(
                 {_id: req.params.thoughtId},
                 {$pull: {reactions: {reactionId: req.body.reactionId}}},
                 {new: true})

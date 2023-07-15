@@ -11,10 +11,7 @@ const {
 
  router.route('/').get(getAllUsers).post(postNewUser)
 
- router.route('/:userId')
-    .get(getUserbyId)
-    .put(updateUser)
-    .delete(deleteUser)
+ router.route('/:userId').get(getUserbyId).put(updateUser).delete(deleteUser)
 
 router.route('/:userId/friends/:friendId').put(addFriends).delete(deleteFriends)
 

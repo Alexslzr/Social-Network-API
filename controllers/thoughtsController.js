@@ -76,26 +76,36 @@ module.exports = {
         }
     },
 
-    async  PostReaction(req,res){
+    async  postReaction(req,res){
         try{
-            
+            const addReaction = await Thought.findOneAndUpdate(
+                {_id: req.params.thoughtId},
+                {$push : {reactions: req.body}},
+                {runValidators: true, new: true})
+
+            if(!addReaction){
+                return res.status(404).json({message: 'There is no though to React'})
+            }
+
+            res.json(addReaction)
         } catch(err){
-            
+            res.status(500).json(err)
         }
     },
 
     async  deleteReaction(req,res){
         try{
+            const deleteReaction = await Thought.findByIdAndUpdate(
+                {_id: req.params.thoughtId},
+                {$pull: {reactions: {reactionId: req.body.reactionId}}},
+                {new: true})
 
+            if(!deleteReaction){
+                res.status(404).json({message: "couldnt find any reaction or though"})
+            }
+            res.json(deleteReaction)
         } catch(err){
-            
+            res.status(500).json(err)
         }
     }
-
-
-
-
-
-
-    
 }

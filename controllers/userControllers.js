@@ -74,8 +74,8 @@ module.exports = {
         try{
             const newFriend = await User.findOneAndUpdate(
                 {_id: req.params.userId},
-                {$push: {friends: req.body}},
-                {new: true})
+                {$push: {friends: req.params.friendId}},
+                {runValidators:true, new: true})
             
             if(!newFriend){
                 return res.status(404).json({message: "No user found under this id"})
@@ -91,14 +91,14 @@ module.exports = {
         try{
             const deleteFriend = await User.findOneAndUpdate(
                 {_id: req.params.userId},
-                {$pull: {friends: req.body}},
+                {$pull: {friends: req.params.friendId}},
                 {new: true})
             
             if(!deleteFriend){
                 return res.status(404).json({message: "No user found under this id"})
             }
 
-            res.json(newFriend)
+            res.json(deleteFriend)
         } catch(err){
             res.status(500).json(err)
         }
